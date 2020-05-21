@@ -146,7 +146,7 @@ public class SystemManager : MonoBehaviour
 
         localasync.allowSceneActivation = false;      
 
-        //读取完毕后返回，系统会自动进入C场景
+
 
         yield return localasync;      
 
