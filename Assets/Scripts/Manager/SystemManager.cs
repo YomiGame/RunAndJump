@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.UIElements;
@@ -42,11 +43,19 @@ public class SystemManager : MonoBehaviour
     private Text WaitText;
 
     private string LoadSchedule;
+
+    private bool _rankActive;
+
+    private bool _rememberInbool;
     //Scene
     private AsyncOperation localasync;
     
     //time
     private int totaltime;//通过时间
+    
+    //save
+    private static DoLeaderBoard _leaderBoard;
+    private List<PlayerRankeData> _rankDataList;
     void Start()
     {
         if (_instance == null)
@@ -58,7 +67,8 @@ public class SystemManager : MonoBehaviour
         }
         
         DontDestroyOnLoad(this.gameObject);
-
+        _rankActive = false;//default RankActive
+        _rememberInbool = true;//default rememberInputBool
     }
     //Global
     private bool gameOver;
@@ -95,6 +105,7 @@ public class SystemManager : MonoBehaviour
                 localasync.allowSceneActivation = true;
             }
 
+
             LoadSchedule = ((int)(targetValue * 100)).ToString() + "%";
             WaitText.text = "Waiting >>>>>" + LoadSchedule;
             
@@ -105,21 +116,31 @@ public class SystemManager : MonoBehaviour
             {
                 cubeMoveCS = GameObject.Find("Cube").GetComponent<CubeMove>();
             }
-
+            if(_leaderBoard == null)
+            {
+                _leaderBoard = gameObject.GetComponent<DoLeaderBoard>();
+                _rankDataList = _leaderBoard.RankJson();
+            }
             if (_gameUi == null)
             {
                 _gameUi = GameObject.Find("Manager").GetComponent<GameUI>();
                 _gameUi.JumpButton.onClick.AddListener(cubeMoveCS.BoxJump);
                 _gameUi.RunButton.onClick.AddListener(cubeMoveCS.BoxRun);
             }
-
-
-
             cubePosition = cubeMoveCS.CubeVector3;
             bool localgameOver = cubeMoveCS.GameOver;
             _gameUi.GameOverSetActive(localgameOver,cubePosition.x);
             _gameUi.ScoreUI(!localgameOver,cubePosition.x,totaltime);
             
+            //rank
+            if (_gameUi.RankBool == _rankActive)
+            {
+                _rankActive = !_gameUi.RankBool;
+                _gameUi.SetDataToRank(_rankDataList);
+            }
+            
+            
+
         }
 
 
@@ -171,4 +192,19 @@ public class SystemManager : MonoBehaviour
             gameOver = true;
         }
     }
+    
+
+    public static void SaveRank(int score,string name)
+    {
+        _leaderBoard.SaveToBoard(score, name);
+    }
+
+    public static void ClearRank(GameUI gameUi)
+    {
+        _leaderBoard.ClearRankJsonFile();
+        _leaderBoard.UpdataRankJson();
+        gameUi.SetDataToRank(_leaderBoard.RankJson());
+        
+    }
+
 }
