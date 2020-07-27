@@ -23,7 +23,7 @@ public struct PlayerRankeData
         private JsonData jsonData;
         private void Start()
         {
-            JsonPath = Application.streamingAssetsPath + Config.LeaderboardPath;
+            JsonPath = Application.persistentDataPath + Config.LeaderboardPath;
             jsonRankList = new List<PlayerRankeData>();
             jsonData = new JsonData();
             UpdataRankJson();
@@ -61,9 +61,10 @@ public struct PlayerRankeData
         //清空缓存
         public void ClearRankJsonFile()
         {
-          jsonRankList = new List<PlayerRankeData>();
           File.WriteAllText(JsonPath, "");
-         }
+          //jsonRankList = new List<PlayerRankeData>();
+          jsonRankList.Clear();
+        }
         
         //更新数据
         public void UpdataRankJson()
