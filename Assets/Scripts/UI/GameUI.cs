@@ -24,7 +24,10 @@ public class GameUI : MonoBehaviour
     private GameObject RememberTip;
     private Text RememberText;
     private Text NameText;
-
+    //Chat
+    private GameObject ChatTip;
+    private GameObject NoInternet;
+    
 
     public bool RankBool
     {
@@ -69,7 +72,7 @@ public class GameUI : MonoBehaviour
         });
         GameObject.Find("ClearRankButton").GetComponent<Button>().onClick.AddListener(() => SystemManager.ClearRank(gameObject.GetComponent<GameUI>()));
 
-        Rank.SetActive(false);
+        
         //Remember
         RememberTip = GameObject.Find("RememberTip");
         GameObject.Find("RememberButton").GetComponent<Button>().onClick.AddListener(() =>
@@ -81,12 +84,29 @@ public class GameUI : MonoBehaviour
         GameObject.Find("RememberExit").GetComponent<Button>().onClick.AddListener(() => RememberTip.SetActive(false));
         GameObject.Find("RememberSave").GetComponent<Button>().onClick.AddListener(() => SystemManager.SaveRank((int) PlayerScore,NameText.text));
         NameText = GameObject.Find("NameText").GetComponent<Text>();
+        
+        
+        //Chat
+        ChatTip = GameObject.Find("ChatTip");
+        NoInternet = GameObject.Find("noInternet");
+        GameObject.Find("ChatButton").GetComponent<Button>().onClick.AddListener(() => ChatTip.SetActive(true));
+        GameObject.Find("ChatExit").GetComponent<Button>().onClick.AddListener(() => ChatTip.SetActive(false));
+        
+
+        
+        //tips reset
+        Rank.SetActive(false);
         RememberTip.SetActive(false);
+        ChatTip.SetActive(false);
         
         //bashPath
         GameOver.SetActive(false);
     }
-    
+
+    public void ChatRoomOver(bool ChatActive)
+    {
+        NoInternet.SetActive(ChatActive);
+    }
 
     public void GameOverSetActive(bool Active,float Score)
     {

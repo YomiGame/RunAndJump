@@ -64,6 +64,7 @@ public struct PlayerRankeData
           File.WriteAllText(JsonPath, "");
           //jsonRankList = new List<PlayerRankeData>();
           jsonRankList.Clear();
+          
         }
         
         //更新数据
@@ -71,8 +72,9 @@ public struct PlayerRankeData
         {
             if (!File.Exists(JsonPath))
             {
-                Debug.LogError("读取的文件不存在！");
                 
+                Debug.Log("读取的文件不存在！");
+                File.Create(JsonPath);
             }
             else
             {

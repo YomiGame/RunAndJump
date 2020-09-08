@@ -44,6 +44,9 @@ public class SystemManager : MonoBehaviour
 
     private string LoadSchedule;
 
+    private bool internetboolen;
+
+
     private bool _rankActive;
 
     private bool _rememberInbool;
@@ -69,6 +72,7 @@ public class SystemManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
         _rankActive = false;//default RankActive
         _rememberInbool = true;//default rememberInputBool
+        internetboolen = true;//暂时
     }
     //Global
     private bool gameOver;
@@ -131,7 +135,7 @@ public class SystemManager : MonoBehaviour
             bool localgameOver = cubeMoveCS.GameOver;
             _gameUi.GameOverSetActive(localgameOver,cubePosition.x);
             _gameUi.ScoreUI(!localgameOver,cubePosition.x,totaltime);
-            
+            _gameUi.ChatRoomOver(internetboolen);
             //rank
             if (_gameUi.RankBool == _rankActive)
             {
