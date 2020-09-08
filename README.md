@@ -6,6 +6,6 @@ Now functions
 1.the box rotate according to certain login
 2.recording the score and play game again（Scene update）
 3.record scores to form a local leaderboard（save in your local phone,don't worry, the file will be deleate when you uninstall the game from your phone）
-
+4.the Chatroom Feature will add to this
 
 I will slowly update some other functions in the future
